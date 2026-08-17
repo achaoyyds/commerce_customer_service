@@ -23,7 +23,7 @@ async def main():
     # 1. 初始化http_client
     init_http_client()
 
-    response = await http_client.get(url="http://192.168.200.145:18081/users/u1001/orders")
+    response = await http_client.get(url="http://localhost:18081/users/u1001/orders")
     print(response.json()['data']['orders'])
 
 
