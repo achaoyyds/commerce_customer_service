@@ -10,6 +10,9 @@ from enum import Enum
 from typing import Any
 from dataclasses import dataclass
 
+from atuguigu.api.schemas import ChatBotMessage
+
+
 class MessageType(Enum):
     TEXT = "text"
     OBJECT = "object"
@@ -83,6 +86,12 @@ class BotMessage:
             text=data["text"],
             object=FocusedObject.from_dict(data["object"]) if data["object"] is not None else None,
         )
+
+@dataclass(slots=True)
+class ProcessedResult:
+    message_id: str
+    messages:list[BotMessage]
+
 
 
 
