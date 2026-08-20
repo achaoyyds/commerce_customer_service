@@ -6,6 +6,9 @@ from handlers.task_handler import TaskHandler
 from handlers.clarify_responder import ClarifyResponder
 from handlers.chitchat_handler import ChitChatHandler
 from engines.dialogue_engine import DialogueEngine
+from task.action.buider import build_action_runner
+from task.command.processor import CommandProcessor
+from task.flows.executor import FlowExecutor
 from task.flows.loader import FlowLoader
 from planner.intents import KNOWLEDGE_INTENTS
 
@@ -20,7 +23,12 @@ def build_dialogue_engine():
         turn_planner=TurnPlanner(),
         turn_plan_validator=TurnPlanValidator(),
         clarify_responder = ClarifyResponder(),
-        task_handler=TaskHandler(flows_list = flows_list),
+        task_handler=TaskHandler(
+            flows_list = flows_list,
+            command_processor=CommandProcessor(),
+            flow_executor=FlowExecutor(),
+            action_runner=build_action_runner()
+    ),
         knowledge_handler= KnowledgeHandler(intents=KNOWLEDGE_INTENTS),
         chitchat_handler=ChitChatHandler()
     )

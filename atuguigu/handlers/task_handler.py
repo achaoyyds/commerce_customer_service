@@ -1,5 +1,6 @@
 from atuguigu.task.flows.flows import FlowList
 from domain.messages import BotMessage
+from task.action.runner import ActionRunner
 from task.command.commands import Command
 from task.command.processor import CommandProcessor
 from task.flows.executor import FlowExecutor
@@ -9,10 +10,13 @@ class TaskHandler:
     def __init__(self,
                  flows_list: FlowList,
                  command_processor:CommandProcessor,
-                 flow_executor:FlowExecutor):
+                 flow_executor:FlowExecutor,
+                 action_runner=ActionRunner
+                 ):
         self._flows_list = flows_list
         self._command_processor = command_processor
         self._flow_executor = flow_executor
+        self._action_runner = action_runner
 
     async def handle(self, state, commands:list[Command]) -> list[BotMessage]:
         """
