@@ -17,7 +17,6 @@ class MessageType(Enum):
     TEXT = "text"
     OBJECT = "object"
 
-
 @dataclass(slots=True)
 class FocusedObject:
     id: str
@@ -30,7 +29,7 @@ class FocusedObject:
             "id": self.id,
             "title": self.title,
             "type": self.type,
-            "attributes": self.attributes,
+            "attributes": dict(self.attributes),
         }
 
     @classmethod
@@ -39,7 +38,7 @@ class FocusedObject:
             id=data["id"],
             title=data["title"],
             type=data["type"],
-            attributes=data["attributes"],
+            attributes=dict(data["attributes"]),
         )
 
 @dataclass(slots=True)
@@ -54,9 +53,9 @@ class UserMessage:
         return {
             "sender_id": self.sender_id,
             "message_id": self.message_id,
-            "type": self.type,
+            "type": self.type.value,
             "text": self.text,
-            "object": FocusedObject.from_dict(self.object) if self.object is not None else None,
+            "object": FocusedObject.to_dict(self.object) if self.object is not None else None,
         }
 
     @classmethod
@@ -64,7 +63,7 @@ class UserMessage:
         return cls(
             sender_id=data["sender_id"],
             message_id=data["message_id"],
-            type=data["type"],
+            type=MessageType(data['type']),
             text=data["text"],
             object=FocusedObject.from_dict(data["object"]) if data["object"] is not None else None,
         )

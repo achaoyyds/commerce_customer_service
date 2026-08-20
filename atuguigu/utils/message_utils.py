@@ -26,14 +26,18 @@ class ChatHistoryBuilder:
         return "\n".join(chat_history)
 
     @staticmethod
-    def _build_message(user_message:UserMessage | BotMessage) -> str:
-        if user_message.type is MessageType.TEXT:
-            return user_message.text.strip()
+    def _build_message(message:UserMessage | BotMessage) -> str:
 
-        return ChatHistoryBuilder._render_object_message(user_message.object)
+        if isinstance(message, BotMessage) and message.object is None:
+            return  message.text.strip()
+
+        if isinstance(message, UserMessage) and message.type is MessageType.TEXT:
+            return message.text.strip()
+
+        return ChatHistoryBuilder._render_object_message(message.object)
 
     @staticmethod
-    def _render_object_message(cls,object:FocusedObject) -> str:
+    def _render_object_message(object:FocusedObject) -> str:
         id = object.id
         label = "订单" if object.type == "order" else "商品"
         title = object.title

@@ -2,15 +2,14 @@
 定义接口数据模型：和前端进行交互
 集成BaseModel:在运行期间完成类型的校验和类型的转换
 """
-
+from pydantic import BaseModel, Field  # 从pydantic导入Field
 from typing import Any
-from pydantic import BaseModel
 
 class ChatObject(BaseModel):
     id:str
     title:str
     type:str
-    attributes: dict[str,Any]
+    attributes: dict[str,Any] = Field(default_factory=dict)
 
 class ChatBotMessage(BaseModel):
     text: str
@@ -18,7 +17,7 @@ class ChatBotMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     sender_id: str
-    text: str
+    text: str | None = None
     object: ChatObject | None = None
 
 class ChatResponse(BaseModel):

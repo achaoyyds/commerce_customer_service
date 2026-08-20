@@ -11,7 +11,7 @@ class DialogueStateService:
     async def process_message(self,user_message: UserMessage) -> ProcessedResult:
         dialogue_state = await self._repository.load_state(user_message.sender_id)
 
-        processed_result = await self._engine.handle_message(user_message,dialogue_state)
+        processed_result = await self._engine.process_message(user_message, dialogue_state)
 
         await self._repository.save_state(user_message.sender_id,dialogue_state)
 
