@@ -1,16 +1,13 @@
 import time
-from typing import Any
-
-from pydantic_settings.sources.providers import aws
 
 from atuguigu.domain.messages import ProcessedResult, BotMessage, MessageType, FocusedObject
 from atuguigu.domain.state import DialogueState
 from atuguigu.planner.turn_planner import TurnPlanner
 from atuguigu.planner.turn_plan_validator import TurnPlanValidator
-from planner.handlers.knowledge_handler import KnowledgeHandler
-from planner.handlers.task_handler import TaskHandler
-from planner.handlers.clarify_responder import ClarifyResponder
-from planner.handlers.chitchat_handler import ChitChatHandler
+from handlers.knowledge_handler import KnowledgeHandler
+from handlers.task_handler import TaskHandler
+from handlers.clarify_responder import ClarifyResponder
+from handlers.chitchat_handler import ChitChatHandler
 from domain.messages import UserMessage
 from planner.intents import KnowledgeIntent
 from planner.turn_plan import ClarifyReason
@@ -117,12 +114,8 @@ class DialogueEngine:
         if state.active_task is not None:
             return await self._task_handler.handle(state,commands=[])
 
-        return await self._clarify_responder.respond(reason= ClarifyReason.OBJECT_REQUIRES_INTENT,state = state)
-
-
-
         # 4.当前业务流程没有激活，恢复用户意图是什么
-        pass
+        return await self._clarify_responder.respond(reason= ClarifyReason.OBJECT_REQUIRES_INTENT,state = state)
 
     def _try_resolve_set_slots_command(self,
                                        object_message: FocusedObject,

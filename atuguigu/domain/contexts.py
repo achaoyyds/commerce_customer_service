@@ -79,11 +79,15 @@ class SystemCollectInformationContext(SystemContext):
     response: dict[str, Any] # 要告诉用户业务流程槽位缺少什么
     slot_name : str # 缺少槽位名字【槽位信息：槽位名字：槽位值】 TODO 主要是为了判断
 
+@dataclass(slots=True)
+class ResumeFailedSystemContext(SystemContext):
+    """没有找到可恢复的业务流程时使用。"""
 
 SYSTEM_CONTEXT_TO_CLASS: dict[str,type[SystemContext]] = {
     "system_task_started": SystemTaskStartedContext,
     "system_task_interrupted": SystemTaskInterruptedContext,
     "system_task_resumed": SystemTaskResumedContext,
     "system_task_canceled": SystemTaskCanceledContext,
-    "system_collect_information": SystemCollectInformationContext
+    "system_collect_information": SystemCollectInformationContext,
+    "system_task_resume_failed":ResumeFailedSystemContext
 }

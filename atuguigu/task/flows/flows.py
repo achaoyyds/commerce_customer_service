@@ -1,6 +1,6 @@
 from dataclasses import dataclass,field
 
-from atuguigu.task.flows.steps import  FlowStep
+from atuguigu.task.flows.steps import FlowStep, StartFlowStep
 
 
 @dataclass(slots=True)
@@ -22,6 +22,15 @@ class Flow:
     def get_step_by_id(self,step_id: str) -> FlowStep | None:
         for step in self.steps:
             if step.id == step_id:
+                return step
+        return None
+
+    def get_start_step(self) -> FlowStep | None:
+        """
+        获取流程的起始步骤
+        """
+        for step in self.steps:
+            if isinstance(step,StartFlowStep):
                 return step
         return None
 
