@@ -10,20 +10,21 @@ from atuguigu.infrastructure.llm_client import llm
 from atuguigu.utils.message_utils import ChatHistoryBuilder
 from atuguigu.task.flows.flows import FlowList
 from atuguigu.planner.turn_plan import TurnPlan
+from planner.intents import KnowledgeIntent
 
 
 class TurnPlanner:
-    async def predict(self, state:DialogueState, flow_list: FlowList) -> TurnPlan:
+    async def predict(self, state:DialogueState, flow_list: FlowList,knowledge_intents:dict[str, KnowledgeIntent]) -> TurnPlan:
         """
         职责：调用LLM 做路由分析，判断当前任务该用哪条轨道处理
 
         """
-        prompts_inputs : dict[str,Any] = self._build_prompt_inputs(state,flow_list)
+        prompts_inputs : dict[str,Any] = self._build_prompt_inputs(state,flow_list,knowledge_intents)
 
         llm_result = await self._invoke_llm(prompts_inputs)
         return llm_result
 
-    def _build_prompt_inputs(self, state:DialogueState, flow_list: FlowList) -> dict[str,Any]:
+    def _build_prompt_inputs(self, state:DialogueState, flow_list: FlowList,knowledge_intents:dict[str, KnowledgeIntent]) -> dict[str,Any]:
         # 1.会话相关
         user_message_str = ChatHistoryBuilder._build_message(state.pending_turn.user_message)
         current_conversation_str = ChatHistoryBuilder.build_turns_message(state.current_session().turns[-10:])
@@ -43,7 +44,11 @@ class TurnPlanner:
                 ]
             },ensure_ascii=False)
 
-        knowledge_intents_json_str = ""
+        knowledge_intents_json_str = json.dumps([
+            {"id":intent.id,"description":intent.description}
+            for intent in knowledge_intents.values()
+        ],ensure_ascii=False)
+
         return {
             "user_message":user_message_str,
             "current_conversation":current_conversation_str,
