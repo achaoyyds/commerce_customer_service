@@ -12,9 +12,11 @@ from atuguigu.repository.dialogue_repository import DialogueRepository
 from atuguigu.services.dialogue_service import DialogueStateService
 from atuguigu.infrastructure.db_client import session_factory  # 有坑  模块下的成员
 from atuguigu.infrastructure import  db_client                   # 包下面的模块 可以的
+from engines.engine_builder import build_dialogue_engine
+
 
 def get_dialogue_engine():
-    return DialogueEngine()
+    return build_dialogue_engine()
 
 """
 调用 get_session() 返回一个异步生成器对象，并不会立即执行函数体。
