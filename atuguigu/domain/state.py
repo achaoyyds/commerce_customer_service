@@ -150,7 +150,7 @@ class DialogueState:
         self.paused_tasks.append(self.active_task)
         self.active_task = None
 
-    def resume_task(self,flow_id:str | None ) -> bool:
+    def resume_task(self,flow_id:str | None = None) -> bool:
         """
         恢复暂停业务流程任务栈的业务流程任务
         Args:

@@ -91,10 +91,12 @@ class DialogueEngine:
          # 4、如果校验通过，找到对应的三条轨道的处理器处理
          if turn_plan.task is not None:
              return await self._task_handler.handle(state,commands = turn_plan.task.commands)
+         elif turn_plan.knowledge is not None:
+             return await self._knowledge_handler.handle(turn_plan.knowledge.intents,state)
+         else:
+             return await self._chitchat_handler.handle(turn_plan.chitchat.chat,state)
 
-         # 5、将三条轨道处理的结果 返回
 
-         return [BotMessage(text="你好，欢迎来到电商小二")]
 
     async def _process_object_message(self,
                                       object_message: FocusedObject,

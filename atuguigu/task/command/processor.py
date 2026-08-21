@@ -42,8 +42,6 @@ class CommandProcessor:
             pass
 
     def _handle_start_flow(self, command:StartFlowCommand, state:DialogueState, flows_list:FlowList):
-        state.end_system_task()
-
         # 获取目标流程对象
         started_flow = flows_list.get_flow_by_id(command.flow)
 
