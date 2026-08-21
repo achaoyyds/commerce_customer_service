@@ -32,7 +32,7 @@ class TaskHandler:
         self._command_processor.process_commands(commands,state,self._flows_list)
 
         # 2. 利用流程推进器推荐流程
-        bot_messages = await self._flow_executor.executor_flow(self._flows_list,state)
+        bot_messages = await self._flow_executor.executor_flow(self._flows_list,self._action_runner,state)
 
         # 3. 返回机器人回复的消息
         return bot_messages

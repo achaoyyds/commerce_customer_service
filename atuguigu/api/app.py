@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from atuguigu.api.chat_router import router
 from atuguigu.infrastructure.db_client import init_db_engine,dispose_engine
 from atuguigu.infrastructure.http_client import init_http_client,close_http_client
-from atuguigu.infrastructure.http_client import init_http_client,close_http_client
 
 
 async def lifespan(_:FastAPI):
