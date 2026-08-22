@@ -3,10 +3,10 @@ from dataclasses import asdict
 from atuguigu.domain.messages import BotMessage
 from atuguigu.domain.state import DialogueState
 from atuguigu.task.flows.flows import FlowList
-from domain.contexts import SystemCollectInformationContext
-from task.action.runner import ActionRunner, ActionCall
-from task.flows.links import FlowStepStaticLink, FlowStepConditionLink
-from task.flows.steps import FlowStep, StartFlowStep, EndFlowStep, ActionFlowStep, CollectFlowStep
+from atuguigu.domain.contexts import SystemCollectInformationContext
+from atuguigu.task.action.runner import ActionRunner, ActionCall
+from atuguigu.task.flows.links import FlowStepStaticLink, FlowStepConditionLink
+from atuguigu.task.flows.steps import FlowStep, StartFlowStep, EndFlowStep, ActionFlowStep, CollectFlowStep
 
 
 class FlowExecutor:

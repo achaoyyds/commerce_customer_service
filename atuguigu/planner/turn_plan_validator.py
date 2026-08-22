@@ -2,8 +2,8 @@ from atuguigu.planner.turn_plan import TurnPlan, ClarifyReason, TurnPlanValidate
 from domain.state import DialogueState
 from planner.intents import KnowledgeIntent
 from planner.turn_plan import TaskTurnPlan
-from task.command.commands import StartFlowCommand, ResumeFlowCommand, CancelFlowCommand, SetSlotsCommand
-from task.flows.flows import FlowList
+from atuguigu.task.command.commands import StartFlowCommand, ResumeFlowCommand, CancelFlowCommand, SetSlotsCommand
+from atuguigu.task.flows.flows import FlowList
 
 
 class TurnPlanValidator:

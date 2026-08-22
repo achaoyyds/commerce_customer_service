@@ -25,7 +25,7 @@ class SetSlotsCommand(Command):
 
 @dataclass(slots=True)
 class CancelFlowCommand(Command):
-    pass
+    flow: str | None = None  # 解包不会发生错误
 
 @dataclass(slots=True)
 class ResumeFlowCommand(Command):

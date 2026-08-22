@@ -1,9 +1,9 @@
 from atuguigu.task.flows.flows import FlowList
-from domain.messages import BotMessage
-from task.action.runner import ActionRunner
-from task.command.commands import Command
-from task.command.processor import CommandProcessor
-from task.flows.executor import FlowExecutor
+from atuguigu.domain.messages import BotMessage
+from atuguigu.task.action.runner import ActionRunner
+from atuguigu.task.command.commands import Command
+from atuguigu.task.command.processor import CommandProcessor
+from atuguigu.task.flows.executor import FlowExecutor
 
 
 class TaskHandler:

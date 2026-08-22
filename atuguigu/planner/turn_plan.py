@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from task.command.commands import Command
+from atuguigu.task.command.commands import Command
 
 
 @dataclass(slots=True)

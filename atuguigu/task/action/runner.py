@@ -25,6 +25,6 @@ class ActionRunner:
     async def run(self,action_call: ActionCall,state:DialogueState) -> ActionResult:
 
         action = self.action_register.get_action(action_call.action_name)
-        action_result = action.run(action_call.action_kwargs,state)
+        action_result = await action.run(action_call.action_kwargs,state)
 
         return action_result

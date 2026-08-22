@@ -4,16 +4,16 @@ from atuguigu.domain.messages import ProcessedResult, BotMessage, MessageType, F
 from atuguigu.domain.state import DialogueState
 from atuguigu.planner.turn_planner import TurnPlanner
 from atuguigu.planner.turn_plan_validator import TurnPlanValidator
-from handlers.knowledge_handler import KnowledgeHandler
-from handlers.task_handler import TaskHandler
-from handlers.clarify_responder import ClarifyResponder
-from handlers.chitchat_handler import ChitChatHandler
-from domain.messages import UserMessage
-from planner.intents import KnowledgeIntent
-from planner.turn_plan import ClarifyReason
-from task.command.commands import SetSlotsCommand
-from task.flows.flows import FlowList
-from task.flows.steps import CollectFlowStep
+from atuguigu.handlers.knowledge_handler import KnowledgeHandler
+from atuguigu.handlers.task_handler import TaskHandler
+from atuguigu.handlers.clarify_responder import ClarifyResponder
+from atuguigu.handlers.chitchat_handler import ChitChatHandler
+from atuguigu.domain.messages import UserMessage
+from atuguigu.planner.intents import KnowledgeIntent
+from atuguigu.planner.turn_plan import ClarifyReason
+from atuguigu.task.command.commands import SetSlotsCommand
+from atuguigu.task.flows.flows import FlowList
+from atuguigu.task.flows.steps import CollectFlowStep
 
 
 class DialogueEngine:
@@ -45,7 +45,7 @@ class DialogueEngine:
         # 3.按消息类型分流 枚举判断用is 不能用 ==
         if user_message.type is MessageType.TEXT:
             bot_messages:list[BotMessage] = await self._process_text_message(state,
-                                                                             flow_list = self._task_handler.flows_list,
+                                                                             flow_list = self._task_handler._flows_list,
                                                                              knowledge_intents = self._knowledge_handler.intents)
         else:
             state.set_focused_object(user_message.object)

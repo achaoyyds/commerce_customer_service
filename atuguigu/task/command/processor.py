@@ -30,6 +30,14 @@ class CommandProcessor:
         Returns:
 
         """
+        # 1. 对象command它真实属于哪个模块
+        print(f"obj class: {command.__class__}")
+        print(f"obj module: {command.__class__.__module__}")
+
+        # 2. 你代码isinstance用的类来自哪个模块
+        print(f"local import class: {StartFlowCommand}")
+        print(f"local import module: {StartFlowCommand.__module__}")
+
         if isinstance(command, StartFlowCommand):
             self._handle_start_flow(command, state, flows_list)
         elif isinstance(command, SetSlotsCommand):
