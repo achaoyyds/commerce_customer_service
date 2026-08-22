@@ -26,7 +26,7 @@ class Turn:
         return {
             "turn_id": self.turn_id,
             "user_message": self.user_message.to_dict(),
-            "bot_messages": [bot_message.to_dict() for bot_message in self.bot_messages]
+            "bot_messages": [bot_message.to_dict() for bot_message in self.bot_messages]  if self.bot_messages else []
         }
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "Turn":

@@ -16,7 +16,7 @@ def _extract_data(result: dict | None) -> dict | None:
 
 async def fetch_order(order_id: str) -> dict | None:
     try:
-        r = await client.http_client.get(f"{_base_url()}/orders/{quote(order_id)}")
+        r = await client.http_client.get(f"http://{_base_url()}/orders/{quote(order_id)}")
         return _extract_data(r.json())
     except Exception as e:
         print(e)
@@ -25,7 +25,7 @@ async def fetch_order(order_id: str) -> dict | None:
 
 async def fetch_logistics(order_id: str) -> dict | None:
     try:
-        r = await client.http_client.get(f"{_base_url()}/orders/{quote(order_id)}/logistics")
+        r = await client.http_client.get(f"http://{_base_url()}/orders/{quote(order_id)}/logistics")
         return _extract_data(r.json())
     except Exception:
         return None
@@ -33,7 +33,7 @@ async def fetch_logistics(order_id: str) -> dict | None:
 
 async def fetch_product(product_id: str) -> dict | None:
     try:
-        r = await client.http_client.get(f"{_base_url()}/products/{quote(product_id)}")
+        r = await client.http_client.get(f"http://{_base_url()}/products/{quote(product_id)}")
         return _extract_data(r.json())
     except Exception:
         return None
