@@ -69,7 +69,7 @@ class ActionResponse(Action):
     def _render(self, response_text, state):
 
         template = Template(response_text)
-        render_str = template.render(slots = state.active_task.slots,context = state.active_system_task)
+        render_str = template.render(slots = state.active_task.slots if state.active_task else {},context = state.active_system_task)
         return render_str
 
     async def call_llm(self,

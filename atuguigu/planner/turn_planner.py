@@ -10,7 +10,7 @@ from atuguigu.infrastructure.llm_client import llm
 from atuguigu.utils.message_utils import ChatHistoryBuilder
 from atuguigu.task.flows.flows import FlowList
 from atuguigu.planner.turn_plan import TurnPlan
-from planner.intents import KnowledgeIntent
+from atuguigu.planner.intents import KnowledgeIntent
 
 
 class TurnPlanner:
@@ -34,7 +34,7 @@ class TurnPlanner:
         interrupted_tasks_json_str = json.dumps([task.to_dict() for task in state.paused_tasks],ensure_ascii=False)
 
         # 3. 卡片相关
-        focused_object_json_str = json.dumps(state.focused_object,ensure_ascii=False) if state.focused_object else "null"
+        focused_object_json_str = json.dumps(state.focused_object.to_dict(),ensure_ascii=False) if state.focused_object else "null"
 
         # 4.清单相关
         available_flow_json_str = json.dumps(

@@ -1,4 +1,4 @@
-from task.action.base import Action
+from atuguigu.task.action.base import Action
 
 
 class ActionRegister:

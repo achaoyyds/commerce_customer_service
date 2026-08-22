@@ -1,7 +1,7 @@
 from atuguigu.planner.turn_plan import TurnPlan, ClarifyReason, TurnPlanValidatedResult, KnowledgeTurnPlan
-from domain.state import DialogueState
-from planner.intents import KnowledgeIntent
-from planner.turn_plan import TaskTurnPlan
+from atuguigu.domain.state import DialogueState
+from atuguigu.planner.intents import KnowledgeIntent
+from atuguigu.planner.turn_plan import TaskTurnPlan
 from atuguigu.task.command.commands import StartFlowCommand, ResumeFlowCommand, CancelFlowCommand, SetSlotsCommand
 from atuguigu.task.flows.flows import FlowList
 

@@ -4,7 +4,7 @@ from dataclasses import dataclass, field
 
 from atuguigu.task.action.base import ActionResult
 from atuguigu.task.action.register import ActionRegister
-from domain.state import DialogueState
+from atuguigu.domain.state import DialogueState
 
 
 @dataclass(slots=True)

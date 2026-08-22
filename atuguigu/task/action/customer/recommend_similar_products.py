@@ -1,9 +1,9 @@
 from typing import Any
 
 from atuguigu.task.action.base import Action, ActionResult
-from domain.messages import BotMessage
-from domain.state import DialogueState
-from task.action.customer.shared import fetch_product
+from atuguigu.domain.messages import BotMessage
+from atuguigu.domain.state import DialogueState
+from atuguigu.task.action.customer.shared import fetch_product
 
 
 class ActionRecommendSimilarProducts(Action):

@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from atuguigu.domain.messages import BotMessage
-from domain.state import DialogueState
+from atuguigu.domain.state import DialogueState
 
 
 @dataclass(slots=True)

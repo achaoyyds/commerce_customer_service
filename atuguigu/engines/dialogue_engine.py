@@ -46,10 +46,10 @@ class DialogueEngine:
         if user_message.type is MessageType.TEXT:
             bot_messages:list[BotMessage] = await self._process_text_message(state,
                                                                              flow_list = self._task_handler._flows_list,
-                                                                             knowledge_intents = self._knowledge_handler.intents)
+                                                                             knowledge_intents = self._knowledge_handler._knowledge_intents)
         else:
             state.set_focused_object(user_message.object)
-            bot_messages:list[BotMessage] = await self._process_object_message(user_message.object, state, self._task_handler.flows_list)
+            bot_messages:list[BotMessage] = await self._process_object_message(user_message.object, state, self._task_handler._flows_list)
 
         # 4.把本轮回复写入 turn ,并提交
         state.pending_turn.bot_messages = bot_messages
@@ -92,7 +92,7 @@ class DialogueEngine:
          if turn_plan.task is not None:
              return await self._task_handler.handle(state,commands = turn_plan.task.commands)
          elif turn_plan.knowledge is not None:
-             return await self._knowledge_handler.handle(turn_plan.knowledge.intents,state)
+             return await self._knowledge_handler.handle(state,turn_plan.knowledge.intents)
          else:
              return await self._chitchat_handler.handle(turn_plan.chitchat.chat,state)
 

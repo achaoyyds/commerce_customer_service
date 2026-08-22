@@ -1,8 +1,8 @@
 from typing import Any
 
 from atuguigu.task.action.base import Action, ActionResult
-from domain.state import DialogueState
-from task.action.customer.shared import fetch_logistics
+from atuguigu.domain.state import DialogueState
+from atuguigu.task.action.customer.shared import fetch_logistics
 
 
 class ActionLookUpLogistic(Action):

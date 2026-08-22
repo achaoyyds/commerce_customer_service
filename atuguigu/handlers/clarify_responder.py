@@ -3,11 +3,11 @@ import json
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 from atuguigu.domain.state import DialogueState
-from domain.messages import BotMessage
-from infrastructure.llm_client import llm
-from planner.turn_plan import TurnPlanValidatedResult, ClarifyReason
-from prompt.loader import load_prompt_template
-from utils.message_utils import ChatHistoryBuilder
+from atuguigu.domain.messages import BotMessage
+from atuguigu.infrastructure.llm_client import llm
+from atuguigu.planner.turn_plan import TurnPlanValidatedResult, ClarifyReason
+from atuguigu.prompt.loader import load_prompt_template
+from atuguigu.utils.message_utils import ChatHistoryBuilder
 
 
 class ClarifyResponder:

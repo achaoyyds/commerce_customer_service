@@ -12,7 +12,7 @@ from atuguigu.repository.dialogue_repository import DialogueRepository
 from atuguigu.services.dialogue_service import DialogueStateService
 from atuguigu.infrastructure.db_client import session_factory  # 有坑  模块下的成员
 from atuguigu.infrastructure import  db_client                   # 包下面的模块 可以的
-from engines.engine_builder import build_dialogue_engine
+from atuguigu.engines.engine_builder import build_dialogue_engine
 
 
 def get_dialogue_engine():
