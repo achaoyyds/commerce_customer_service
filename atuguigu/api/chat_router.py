@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from dataclasses import dataclass
 from fastapi import APIRouter,Depends
-from atuguigu.api.schemas import ChatRequest,ChatResponse,ChatBotMessage,ChatObject
+from atuguigu.api.schemas import ChatRequest,ChatResponse,ChatBotMessage,ChatObject,ChatHistoryResponse
 from atuguigu.domain.messages import UserMessage,ProcessedResult,MessageType,FocusedObject
 from atuguigu.api.dependencies import DialogueStateServiceDep
 
@@ -69,6 +69,13 @@ async def chat_endpoint(chat_request: ChatRequest, service:DialogueStateServiceD
     # 3.将处理后的领域数据模型转成 接口数据模型
     chat_response = _build_chat_response(processed_result)
     return chat_response
+
+@router.get("/api/chat/history",response_model=ChatHistoryResponse)
+async def chat_history_endpoint(sender_id:str,service:DialogueStateServiceDep):
+    chat_history_messages = await service.get_chat_history(sender_id)
+
+    return ChatHistoryResponse(sender_id=sender_id, messages=chat_history_messages)
+
 
 
 

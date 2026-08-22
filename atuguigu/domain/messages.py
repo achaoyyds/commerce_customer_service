@@ -7,11 +7,8 @@
 """
 
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 from dataclasses import dataclass
-
-from atuguigu.api.schemas import ChatBotMessage
-
 
 class MessageType(Enum):
     TEXT = "text"
@@ -90,6 +87,15 @@ class BotMessage:
 class ProcessedResult:
     message_id: str
     messages:list[BotMessage]
+
+
+@dataclass(slots=True)
+class ChatHistoryMessage:
+    session_id: str
+    role:Literal["user","bot",]
+    text: str | None = None
+    object: FocusedObject | None = None
+
 
 
 
