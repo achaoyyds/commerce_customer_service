@@ -179,6 +179,8 @@ class CommandProcessor:
 
     def _handle_cancel_flow(self, state:DialogueState, flows_list:FlowList):
         active_task = state.active_task
+        if active_task is None:
+            return
         state.cancel_active_task()
         state.start_system_task(SystemTaskCanceledContext(
             flow_id="system_task_canceled",
