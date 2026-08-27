@@ -1,48 +1,98 @@
 slots:
-  order_number:
+  account_no:
     type: text
-    label: 订单号
-    description: 用户的订单号
+    label: 账户号
+    description: 用户的银行账户号或银行卡号
 
-  order_status:
+  account_status:
     type: text
-    label: 订单状态
-    description: 订单当前状态
+    label: 账户状态
+    description: 账户当前状态
 
-  order_summary:
+  balance_amount:
     type: text
-    label: 订单摘要
-    description: 订单摘要信息
+    label: 账户余额
+    description: 账户当前余额
 
-  tracking_number:
+  frozen_amount:
     type: text
-    label: 物流单号
-    description: 物流单号
+    label: 冻结金额
+    description: 账户冻结金额
 
-  logistics_company:
+  available_amount:
     type: text
-    label: 物流公司
-    description: 物流公司名称
+    label: 可用余额
+    description: 账户可用余额
 
-  logistics_status:
+  transaction_date:
     type: text
-    label: 物流进度
-    description: 物流当前进度
+    label: 交易日期
+    description: 需要查询的交易日期
 
-  product_id:
+  transaction_summary:
     type: text
-    label: 商品ID
-    description: 当前咨询商品的唯一标识
+    label: 交易流水
+    description: 账户交易流水摘要
 
-  refund_reason:
+  loan_amount:
     type: text
-    label: 退款原因
-    description: 申请退款的原因
+    label: 贷款金额
+    description: 申请贷款金额
+
+  loan_term_months:
+    type: text
+    label: 贷款期限
+    description: 申请贷款期限（月）
+
+  loan_purpose:
+    type: text
+    label: 贷款用途
+    description: 贷款资金用途
+
+  loan_application_no:
+    type: text
+    label: 贷款申请编号
+    description: 提交成功后返回的贷款申请编号
+
+  loan_application_status:
+    type: text
+    label: 贷款申请状态
+    description: 贷款申请当前状态
+
+  loss_reason:
+    type: text
+    label: 挂失原因
+    description: 信用卡挂失原因
+
+  loss_result:
+    type: text
+    label: 挂失结果
+    description: 挂失处理结果
+
+  ticket_type:
+    type: text
+    label: 工单类型
+    description: 投诉工单类型
+
+  related_transaction_no:
+    type: text
+    label: 关联交易号
+    description: 投诉工单关联的交易流水号
+
+  ticket_description:
+    type: text
+    label: 问题描述
+    description: 投诉问题描述
+
+  ticket_no:
+    type: text
+    label: 工单编号
+    description: 创建成功后返回的工单编号
 
 flows:
   onboarding:
     name: 欢迎引导
-    description: 在聊天窗口初次打开时欢迎用户，并介绍助手可处理的电商服务。这个 flow 通常由系统主动触发。
+    description: 在聊天窗口初次打开时欢迎用户，并介绍助手可处理的金融服务。这个 flow 通常由系统主动触发。
     steps:
       - id: start
         type: start
@@ -52,129 +102,204 @@ flows:
         type: action
         action: action_response
         args:
-          text: "你好，这里是 Atguigu 电商助手。我可以帮你查订单状态、查物流、了解商品信息，或者提交退款申请。"
+          text: "你好，这里是 Atguigu 金融助手。我可以帮你查账户余额、查交易流水、了解贷款和理财产品，或者办理贷款申请、信用卡挂失、提交投诉工单。"
         next: end
 
       - id: end
         type: end
         next: []
 
-  order_status_query:
-    name: 订单状态查询
-    description: 帮用户查询订单当前的处理状态，例如待付款、待发货、已发货或已完成。
+  account_balance_query:
+    name: 账户余额查询
+    description: 帮用户查询银行账户的余额、可用余额、冻结金额和账户状态。
     steps:
       - id: start
         type: start
-        next: ask_order_number
+        next: ask_account_no
 
-      - id: ask_order_number
+      - id: ask_account_no
         type: collect
-        slot_name: order_number
+        slot_name: account_no
         response:
-          text: "请告诉我你的订单号。"
-        next: lookup_order_status
+          text: "请提供你的银行账户号或银行卡号。"
+        next: lookup_balance
 
-      - id: lookup_order_status
+      - id: lookup_balance
         type: action
-        action: action_lookup_order_status
-        next: show_order_status
+        action: action_lookup_account_balance
+        next: show_balance
 
-      - id: show_order_status
+      - id: show_balance
         type: action
         action: action_response
         args:
-          text: "订单{{ slots.order_number }}当前状态是：{{ slots.order_status }}。{{ slots.order_summary }}"
+          text: "账户{{ slots.account_no }}当前状态为{{ slots.account_status }}，余额{{ slots.balance_amount }}元，其中冻结金额{{ slots.frozen_amount }}元，可用余额{{ slots.available_amount }}元。"
         next: end
 
       - id: end
         type: end
         next: []
 
-  logistics_tracking:
-    name: 物流查询
-    description: 帮用户查询订单物流进度、物流单号和配送公司信息。
+  transaction_query:
+    name: 交易查询
+    description: 帮用户查询账户的最近交易流水，含交易金额、时间、交易对象等信息。
     steps:
       - id: start
         type: start
-        next: ask_order_number
+        next: ask_account_no
 
-      - id: ask_order_number
+      - id: ask_account_no
         type: collect
-        slot_name: order_number
+        slot_name: account_no
         response:
-          text: "请告诉我你的订单号。"
-        next: lookup_logistics
+          text: "请提供你的银行账户号或银行卡号。"
+        next: ask_transaction_date
 
-      - id: lookup_logistics
+      - id: ask_transaction_date
+        type: collect
+        slot_name: transaction_date
+        response:
+          text: "请问要查询哪一天的交易流水呢？（例如：2026-08-26）"
+        next: lookup_transactions
+
+      - id: lookup_transactions
         type: action
-        action: action_lookup_logistics
-        next: show_logistics
+        action: action_lookup_transactions
+        next: show_transactions
 
-      - id: show_logistics
+      - id: show_transactions
         type: action
         action: action_response
         args:
-          text: "订单{{ slots.order_number }}由{{ slots.logistics_company }}配送，物流单号是{{ slots.tracking_number }}。当前进度：{{ slots.logistics_status }}。"
+          text: "账户{{ slots.account_no }}的交易流水如下：{{ slots.transaction_summary }}"
         next: end
 
       - id: end
         type: end
         next: []
 
-  refund_request:
-    name: 退款申请
-    description: 帮用户提交简单的退款申请，收集订单号和退款原因。
+  loan_application:
+    name: 贷款申请
+    description: 引导用户提交贷款申请，收集贷款金额、期限和用途，提交后返回申请编号。
     steps:
       - id: start
         type: start
-        next: ask_order_number
+        next: ask_loan_amount
 
-      - id: ask_order_number
+      - id: ask_loan_amount
         type: collect
-        slot_name: order_number
+        slot_name: loan_amount
         response:
-          text: "请告诉我你的订单号。"
-        next: ask_refund_reason
+          text: "请问贷款金额是多少？"
+        next: ask_loan_term
 
-      - id: ask_refund_reason
+      - id: ask_loan_term
         type: collect
-        slot_name: refund_reason
+        slot_name: loan_term_months
         response:
-          text: "请简单说一下退款原因。"
-        next: refund_submitted
+          text: "请问贷款期限是几个月？"
+        next: ask_loan_purpose
 
-      - id: refund_submitted
+      - id: ask_loan_purpose
+        type: collect
+        slot_name: loan_purpose
+        response:
+          text: "请问贷款主要用于什么用途？"
+        next: submit_loan
+
+      - id: submit_loan
+        type: action
+        action: action_submit_loan_application
+        next: show_loan_result
+
+      - id: show_loan_result
         type: action
         action: action_response
         args:
-          text: "好的，订单{{ slots.order_number }}的退款申请已提交，原因是：{{ slots.refund_reason }}。后续会尽快为你处理。"
+          text: "贷款申请已提交，申请编号为{{ slots.loan_application_no }}，当前状态为{{ slots.loan_application_status }}。"
         next: end
 
       - id: end
         type: end
         next: []
 
-  similar_product_recommendation:
-    name: 相似商品推荐
-    description: 基于当前商品为用户推荐类似商品。当前版本先保留流程入口，具体推荐能力后续接入。
+  credit_card_loss_report:
+    name: 信用卡挂失
+    description: 帮用户办理信用卡挂失，收集账户号/银行卡号和挂失原因，提交后返回处理结果。
     steps:
       - id: start
         type: start
-        next:
-          - if: "slots.get('product_id')"
-            then: respond
-          - else: missing_product_context
+        next: ask_account_no
 
-      - id: missing_product_context
+      - id: ask_account_no
+        type: collect
+        slot_name: account_no
+        response:
+          text: "请提供需要挂失的账户号或银行卡号。"
+        next: ask_loss_reason
+
+      - id: ask_loss_reason
+        type: collect
+        slot_name: loss_reason
+        response:
+          text: "请简单说明挂失原因。"
+        next: submit_loss
+
+      - id: submit_loss
+        type: action
+        action: action_report_credit_card_loss
+        next: show_loss_result
+
+      - id: show_loss_result
         type: action
         action: action_response
         args:
-          text: "请先选择一个商品，再继续咨询。"
+          text: "{{ slots.loss_result }}"
         next: end
 
-      - id: respond
+      - id: end
+        type: end
+        next: []
+
+  complaint_ticket:
+    name: 投诉工单
+    description: 帮用户创建投诉工单，收集工单类型、关联交易号和问题描述，返回工单编号。
+    steps:
+      - id: start
+        type: start
+        next: ask_ticket_type
+
+      - id: ask_ticket_type
+        type: collect
+        slot_name: ticket_type
+        response:
+          text: "请问工单类型是什么？（例如：投诉、建议、咨询）"
+        next: ask_related_transaction_no
+
+      - id: ask_related_transaction_no
+        type: collect
+        slot_name: related_transaction_no
+        response:
+          text: "请提供关联的交易流水号（没有的话填“无”）。"
+        next: ask_ticket_description
+
+      - id: ask_ticket_description
+        type: collect
+        slot_name: ticket_description
+        response:
+          text: "请描述一下你遇到的问题。"
+        next: submit_ticket
+
+      - id: submit_ticket
         type: action
-        action: action_recommend_similar_products
+        action: action_submit_complaint_ticket
+        next: show_ticket_result
+
+      - id: show_ticket_result
+        type: action
+        action: action_response
+        args:
+          text: "工单已创建，工单编号为{{ slots.ticket_no }}，我们会尽快为你处理。"
         next: end
 
       - id: end

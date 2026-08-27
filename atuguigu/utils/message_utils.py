@@ -42,7 +42,13 @@ class ChatHistoryBuilder:
     @staticmethod
     def _render_object_message(object:FocusedObject) -> str:
         id = object.id
-        label = "订单" if object.type == "order" else "商品"
+        label = {
+            "account": "账户",
+            "card": "银行卡",
+            "loan": "贷款",
+            "transaction": "交易",
+            "product": "产品",
+        }.get(object.type, "业务对象")
         title = object.title
         attributes_str = "|".join([f"{k}={v}" for k,v in object.attributes.items()])
         return f"【id={id} label={label} title={title} attributes={attributes_str}】"

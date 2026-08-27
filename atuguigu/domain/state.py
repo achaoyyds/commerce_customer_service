@@ -139,7 +139,7 @@ class DialogueState:
         Returns:
 
         """
-        self.paused_tasks = [paused_task for paused_task in self.paused_tasks if paused_task.step_id != flow_id]
+        self.paused_tasks = [paused_task for paused_task in self.paused_tasks if paused_task.flow_id != flow_id]
 
     def interrupt_active_task(self):
         """
@@ -159,7 +159,7 @@ class DialogueState:
         Returns:
 
         """
-        if not self.active_task:
+        if not self.paused_tasks:
             return False
 
         if flow_id is None:

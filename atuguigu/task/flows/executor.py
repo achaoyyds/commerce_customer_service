@@ -214,8 +214,8 @@ class FlowExecutor:
 
         # 2.利用点击的卡片
         excepted_slots_mapping = {
-            "order":"order_number",
-            "product":"product_id",
+            "account": "account_no",
+            "card": "account_no",
         }
         excepted_slots = excepted_slots_mapping.get(state.focused_object.type)
         # 3.当前业务流程的这一步需要的槽位名称是否和期望的一致,并且active_task 对应的槽位为空

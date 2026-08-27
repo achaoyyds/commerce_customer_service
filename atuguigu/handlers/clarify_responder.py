@@ -52,20 +52,22 @@ class ClarifyResponder:
             return "请先发送你想咨询的对象，我再继续帮你看。"
 
         if reason is ClarifyReason.MISSING_KNOWLEDGE_INTENT:
-            return "你是想了解商品信息、订单信息，还是售后配送规则呢？"
+            return "你是想了解账户信息、交易流水、贷款产品还是理财产品呢？"
 
         if reason is ClarifyReason.MISSING_TRACK:
             return "你是想先处理业务问题，还是先咨询信息呢？"
 
         if reason is ClarifyReason.MISSING_TASK_COMMANDS:
-            return "你这次是想办理什么业务呢？比如查订单、查物流，或者申请退款。"
+            return "你这次是想办理什么业务呢？比如查账户余额、查交易流水、申请贷款或信用卡挂失。"
 
         if reason is ClarifyReason.OBJECT_REQUIRES_INTENT:
             focused_object = state.focused_object
-            if focused_object is not None and focused_object.type == "order":
-                return "我已经收到这个订单了。你想查订单状态、查物流，还是申请退款呢？"
-            if focused_object is not None and focused_object.type == "product":
-                return "我已经收到这个商品了。你想了解它的商品信息、发货情况，还是售后相关问题呢？"
+            if focused_object is not None and focused_object.type == "account":
+                return "我已经收到这个账户了。你想查账户余额、交易流水，还是办理其他业务呢？"
+            if focused_object is not None and focused_object.type == "loan":
+                return "我已经收到这个贷款产品了。你想了解产品详情，还是办理贷款申请呢？"
+            if focused_object is not None and focused_object.type == "wealth":
+                return "我已经收到这个理财产品了。你想了解产品详情，还是进一步咨询购买呢？"
 
         return "我还需要再确认一下你的意思，你可以换个更具体的说法告诉我。"
 

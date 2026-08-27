@@ -5,6 +5,7 @@ from fastapi import APIRouter,Depends
 from atuguigu.api.schemas import ChatRequest,ChatResponse,ChatBotMessage,ChatObject,ChatHistoryResponse
 from atuguigu.domain.messages import UserMessage,ProcessedResult,MessageType,FocusedObject
 from atuguigu.api.dependencies import DialogueStateServiceDep
+from atuguigu.task.action.customer import shared as finance_shared
 
 router = APIRouter()
 
@@ -75,6 +76,13 @@ async def chat_history_endpoint(sender_id:str,service:DialogueStateServiceDep):
     chat_history_messages = await service.get_chat_history(sender_id)
 
     return ChatHistoryResponse(sender_id=sender_id, messages=chat_history_messages)
+
+
+@router.get("/api/accounts")
+async def list_accounts_endpoint(sender_id: str):
+    """查询客户名下账户列表，供前端侧边栏展示账户对象。"""
+    accounts = await finance_shared.fetch_customer_accounts(sender_id)
+    return {"accounts": accounts}
 
 
 

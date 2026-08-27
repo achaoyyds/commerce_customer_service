@@ -18,13 +18,11 @@ async def lifespan(_:FastAPI):
     print("应用启动的时候，执行回调函数")
     init_db_engine()
     init_http_client()
-    init_http_client()
 
     # 2.真正执行路由请求
     yield
 
     await dispose_engine()
-    await close_http_client()
     await close_http_client()
 
 app = FastAPI(description="智能客服项目",lifespan=lifespan)

@@ -13,7 +13,15 @@ from atuguigu.task.flows.executor import FlowExecutor
 from atuguigu.task.flows.loader import FlowLoader
 from atuguigu.planner.intents import KNOWLEDGE_INTENTS
 from atuguigu.handlers.knowledge_responder import KnowledgeResponder
-from atuguigu.handlers.providers.knowledge import ApiOrderProvider, ApiProductProvider, FAQDefaultProvider, RAGDefaultProvider
+from atuguigu.handlers.providers.knowledge import (
+    ApiAccountProvider,
+    ApiTransactionProvider,
+    ApiLoanProductProvider,
+    ApiWealthProductProvider,
+    ApiCustomerProvider,
+    FAQDefaultProvider,
+    RAGDefaultProvider,
+)
 from atuguigu.handlers.providers.register import ProviderRegister
 
 PROJECT_ROOT_DIR = Path(__file__).resolve().parents[2]
@@ -36,8 +44,11 @@ def build_dialogue_engine():
         knowledge_handler= KnowledgeHandler(intents=KNOWLEDGE_INTENTS,
                                            knowledge_responder=KnowledgeResponder(),
                                            providers_register= ProviderRegister(providers=[
-                                               ApiOrderProvider(),
-                                               ApiProductProvider(),
+                                               ApiAccountProvider(),
+                                               ApiTransactionProvider(),
+                                               ApiLoanProductProvider(),
+                                               ApiWealthProductProvider(),
+                                               ApiCustomerProvider(),
                                                FAQDefaultProvider(),
                                                RAGDefaultProvider()
                                            ])

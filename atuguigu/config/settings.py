@@ -17,7 +17,8 @@ class Settings(BaseSettings):
     llm_model: str
     llm_base_url: str
     llm_api_key: str
-    commerce_api_base_url: str
+    finance_api_base_url: str
+    finance_channel_code: str
     database_url: str
     app_host: str
     app_port: int

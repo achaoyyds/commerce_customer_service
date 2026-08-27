@@ -124,13 +124,13 @@ class DialogueEngine:
                                        state: DialogueState,
                                        flows_list: FlowList
                                        ) -> SetSlotsCommand | None:
-        if object_message.type == "order":
-            if self._is_build_set_slots_command("order_number",state,flows_list):
-                return SetSlotsCommand(command="set_slots",slots={"order_number":object_message.id})
+        slot_name = {
+            "account": "account_no",
+            "card": "account_no",
+        }.get(object_message.type)
 
-        if object_message.type == "product":
-            if self._is_build_set_slots_command("product_id",state,flows_list):
-                return SetSlotsCommand(command="set_slots",slots={"product_id":object_message.id})
+        if slot_name and self._is_build_set_slots_command(slot_name, state, flows_list):
+            return SetSlotsCommand(command="set_slots", slots={slot_name: object_message.id})
 
         return None
 
