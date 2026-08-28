@@ -7,6 +7,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from atuguigu.domain.state import DialogueState
 from atuguigu.prompt.loader import load_prompt_template
 from atuguigu.infrastructure.llm_client import llm
+from atuguigu.observability.token_usage import token_usage_handler
 from atuguigu.utils.message_utils import ChatHistoryBuilder
 from atuguigu.task.flows.flows import FlowList
 from atuguigu.planner.turn_plan import TurnPlan
@@ -67,7 +68,7 @@ class TurnPlanner:
         # 构建langchain 链 JsonOutputParser().invoke(json_str)：把 json 字符串解析成python 字典
         chain = prompt_template | llm | JsonOutputParser()
 
-        llm_result_dict = await chain.ainvoke(prompts_inputs)
+        llm_result_dict = await chain.ainvoke(prompts_inputs, config={"callbacks": [token_usage_handler]})
 
         return TurnPlan.from_dict(llm_result_dict)
 

@@ -3,6 +3,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 from atuguigu.utils.message_utils import  ChatHistoryBuilder
 from atuguigu.infrastructure.llm_client import llm as llm_client
+from atuguigu.observability.token_usage import token_usage_handler
 from atuguigu.domain.messages import BotMessage
 from atuguigu.domain.state import DialogueState
 from atuguigu.prompt.loader import load_prompt_template
@@ -24,6 +25,6 @@ class ChitChatResponder:
         result = await chain.ainvoke({
             "user_message":chat,
             "history":ChatHistoryBuilder.build_turns_message(state.current_session().turns[-10:]),
-        })
+        }, config={"callbacks": [token_usage_handler]})
         return [BotMessage(text=result)]
 

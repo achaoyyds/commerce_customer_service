@@ -5,6 +5,7 @@ from langchain_core.prompts import PromptTemplate
 from atuguigu.domain.state import DialogueState
 from atuguigu.domain.messages import BotMessage
 from atuguigu.infrastructure.llm_client import llm
+from atuguigu.observability.token_usage import token_usage_handler
 from atuguigu.planner.turn_plan import TurnPlanValidatedResult, ClarifyReason
 from atuguigu.prompt.loader import load_prompt_template
 from atuguigu.utils.message_utils import ChatHistoryBuilder
@@ -78,7 +79,7 @@ class ClarifyResponder:
 
         chain = prompt_template | llm | StrOutputParser()
 
-        result = await chain.ainvoke(prompt_inputs)
+        result = await chain.ainvoke(prompt_inputs, config={"callbacks": [token_usage_handler]})
 
         return [BotMessage(text=result)]
 

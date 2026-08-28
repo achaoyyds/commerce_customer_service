@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     database_url: str
     app_host: str
     app_port: int
+    jwt_secret: str = "admin-dev-secret-change-me-please-use-env-in-prod"
+    jwt_algorithm: str = "HS256"
+    jwt_expire_minutes: int = 720
 
 
 # 实例化得到配置信息类

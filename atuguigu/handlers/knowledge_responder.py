@@ -5,6 +5,7 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 from atuguigu.infrastructure.llm_client import llm as llm_client
+from atuguigu.observability.token_usage import token_usage_handler
 from atuguigu.utils.message_utils import ChatHistoryBuilder
 from atuguigu.domain.messages import BotMessage
 
@@ -29,5 +30,5 @@ class KnowledgeResponder:
             "user_message":ChatHistoryBuilder._build_message(state.pending_turn.user_message),
             "history":ChatHistoryBuilder.build_turns_message(state.current_session().turns[-10:0]),
             "knowledge_content":"\n\n".join([chunk.content for chunk in chunks ])
-        })
+        }, config={"callbacks": [token_usage_handler]})
         return [BotMessage(text=result)]

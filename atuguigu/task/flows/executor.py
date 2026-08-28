@@ -185,6 +185,7 @@ class FlowExecutor:
     def _select_next_step_id(self, step: FlowStep,
                         state: DialogueState):
 
+        fallback_target = None
         for next_link in step.next:
 
             if isinstance(next_link,FlowStepStaticLink):
@@ -194,8 +195,10 @@ class FlowExecutor:
                 validated = self._eval_condition(next_link.condition,state)
                 if validated:
                     return next_link.target
-            if isinstance(next_link,FlowStepStaticLink):
-                return next_link.target
+            elif isinstance(next_link,FlowStepFallbackLink):
+                fallback_target = next_link.target
+
+        return fallback_target
 
     def _eval_condition(self, condition, state):
         #  "slots.get('product_id')"    # eval

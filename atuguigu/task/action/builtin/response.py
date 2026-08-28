@@ -6,6 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 
 from atuguigu.utils.message_utils import ChatHistoryBuilder
 from atuguigu.infrastructure.llm_client import llm as llm_client
+from atuguigu.observability.token_usage import token_usage_handler
 from atuguigu.domain.messages import BotMessage
 from atuguigu.domain.state import DialogueState
 from atuguigu.task.action.base import Action, ActionResult
@@ -87,7 +88,7 @@ class ActionResponse(Action):
             "history": ChatHistoryBuilder.build_turns_message(state.current_session().turns[-5:]),
             "user_message": ChatHistoryBuilder._build_message(state.pending_turn.user_message),
             "current_response": rendered_text
-        })
+        }, config={"callbacks": [token_usage_handler]})
 
         # 4. 返回
         return rewritten

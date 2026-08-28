@@ -1,4 +1,6 @@
+import json
 from pathlib import Path
+
 from atuguigu.planner.turn_planner import TurnPlanner
 from atuguigu.planner.turn_plan_validator import TurnPlanValidator
 from atuguigu.handlers.chitchat_responder import ChitChatResponder
@@ -23,13 +25,28 @@ from atuguigu.handlers.providers.knowledge import (
     RAGDefaultProvider,
 )
 from atuguigu.handlers.providers.register import ProviderRegister
+from atuguigu.admin.cfg_repository import CfgReleaseRepository
+from atuguigu.infrastructure import db_client
 
 PROJECT_ROOT_DIR = Path(__file__).resolve().parents[2]
 FLOW_CONFIG_DIR = PROJECT_ROOT_DIR / "flow_config"
 FLOW_CONFIGS = ["system_flows.yml", "user_flows.yml"]
 
-def build_dialogue_engine():
-    flows_list = FlowLoader().load_multi_yarm([FLOW_CONFIG_DIR / flow_config for flow_config in FLOW_CONFIGS])
+
+async def _load_flows_list():
+    """优先从数据库最新已发布快照加载流程，失败时回退到 YAML 文件。"""
+    try:
+        async with db_client.session_factory() as session:
+            release = await CfgReleaseRepository(session).get_latest_published("flow", "ALL")
+            if release is not None:
+                return FlowLoader().load_from_dict(json.loads(release.snapshot_json))
+    except Exception as exc:  # noqa: BLE001 - 加载失败需兜底，不能中断引擎构建
+        print(f"[engine_builder] 从数据库加载流程失败，回退 YAML：{exc}")
+    return FlowLoader().load_multi_yarm([FLOW_CONFIG_DIR / flow_config for flow_config in FLOW_CONFIGS])
+
+
+async def build_dialogue_engine():
+    flows_list = await _load_flows_list()
 
     return DialogueEngine(
         turn_planner=TurnPlanner(),

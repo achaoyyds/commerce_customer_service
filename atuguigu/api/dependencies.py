@@ -10,13 +10,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from atuguigu.engines.dialogue_engine import DialogueEngine
 from atuguigu.repository.dialogue_repository import DialogueRepository
 from atuguigu.services.dialogue_service import DialogueStateService
+from atuguigu.observability.repository import ObservabilityRepository
 from atuguigu.infrastructure.db_client import session_factory  # 有坑  模块下的成员
 from atuguigu.infrastructure import  db_client                   # 包下面的模块 可以的
 from atuguigu.engines.engine_builder import build_dialogue_engine
 
 
-def get_dialogue_engine():
-    return build_dialogue_engine()
+async def get_dialogue_engine():
+    return await build_dialogue_engine()
 
 """
 调用 get_session() 返回一个异步生成器对象，并不会立即执行函数体。
@@ -41,7 +42,12 @@ DialogueEngineDep = Annotated[DialogueEngine,Depends(get_dialogue_engine)]
 
 DialogueRepositoryDep = Annotated[DialogueRepository,Depends(get_dialogue_repository)]
 
-def get_dialogue_service(engine:DialogueEngineDep,repository: DialogueRepositoryDep):
-    return DialogueStateService(engine,repository)
+def get_observability_repository(session:DialogueSessionDep):
+    return ObservabilityRepository(session)
+
+ObservabilityRepositoryDep = Annotated[ObservabilityRepository,Depends(get_observability_repository)]
+
+def get_dialogue_service(engine:DialogueEngineDep,repository: DialogueRepositoryDep, observability_repository: ObservabilityRepositoryDep):
+    return DialogueStateService(engine,repository,observability_repository)
 
 DialogueStateServiceDep = Annotated[DialogueStateService,Depends(get_dialogue_service)]

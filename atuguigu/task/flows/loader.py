@@ -48,16 +48,23 @@ class FlowLoader:
     利用 pyyaml 包，将yaml文件解析成对象并且解析后的字典实例化对应的数据模型 最后返回 FlowList
     """
 
-    def _load_signle_yaml(self,path:Path) -> FlowList:
-        with open(path,'r',encoding="utf-8") as f:
-            flow_dict:dict[str,Any] = yaml.safe_load(f.read())
+    def load_from_dict(self,flow_dict:dict[str,Any]) -> FlowList:
+        """从解析好的 dict（YAML 或数据库快照）构建 FlowList。
 
-        flows:dict[str,dict[str,Any]] = flow_dict.get("flows")
+        dict 顶层结构：{"flows": {...}, "slots": {...}}
+        """
+        flows:dict[str,dict[str,Any]] = flow_dict.get("flows") or {}
         slots:dict[str,dict[str,Any]]= flow_dict.get("slots",{})
 
         loaded_slots:dict[str,FlowSlot] = _load_slots(slots)
         loaded_flows: list[Flow] = _load_flows(flows,loaded_slots)
         return FlowList(flows = loaded_flows,slots = loaded_slots)
+
+    def _load_signle_yaml(self,path:Path) -> FlowList:
+        with open(path,'r',encoding="utf-8") as f:
+            flow_dict:dict[str,Any] = yaml.safe_load(f.read())
+
+        return self.load_from_dict(flow_dict)
 
     def load_multi_yarm(self,paths:list[Path]) -> FlowList:
         flows:list[Flow] = []
